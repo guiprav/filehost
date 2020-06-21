@@ -1,0 +1,19 @@
+{
+  "name": "filehost",
+  "version": "0.0.0",
+  "author": "Gui Prá (super.driver.512@gmail.com)",
+  "license": "AGPL-3.0+",
+  "type": "module",
+  "scripts": {
+    "start": "snowpack dev",
+    "build": "snowpack build",
+    "test": "echo \"This template does not include a test runner by default.\" && exit 1"
+  },
+  "dependencies": {
+    "dominant": "github:guiprav/dominant"
+  },
+  "devDependencies": {
+    "snowpack": "^2.5.0",
+    "typescript": "^3.9.5"
+  }
+}
