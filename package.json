@@ -10,7 +10,8 @@
     "test": "echo \"This template does not include a test runner by default.\" && exit 1"
   },
   "dependencies": {
-    "dominant": "github:guiprav/dominant"
+    "dominant": "github:guiprav/dominant",
+    "lodash": "^4.17.15"
   },
   "devDependencies": {
     "snowpack": "^2.5.0",

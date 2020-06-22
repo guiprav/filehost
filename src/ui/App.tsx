@@ -29,6 +29,11 @@ document.head.append(
 );
 
 class App extends d.Component {
+  constructor() {
+    super();
+    (window as any).app = this;
+  }
+
   breadcrumbs = [
     { key: 'myFiles', icon: 'fa fa-folder-o', label: 'My Files' },
     { key: 'pictures', label: 'Pictures' },
@@ -40,7 +45,7 @@ class App extends d.Component {
 
   dirEntries = [
     {
-      _id: 'fake-id',
+      _id: 'fake-id-1',
       type: 'dir',
       name: 'Memes',
       modifiedAt: 'Today',
@@ -48,6 +53,7 @@ class App extends d.Component {
     },
 
     {
+      _id: 'fake-id-2',
       type: 'file',
       uuid: '1a26940b-919d-4029-b462-dd2651a7463b',
       name: 'sadboy_and_egirl.jpg',
@@ -56,6 +62,7 @@ class App extends d.Component {
     },
 
     {
+      _id: 'fake-id-3',
       type: 'file',
       uuid: 'ed48e726-1ecc-411d-a5b0-89d43f965e75',
       name: 'js_is_shit.jpg',
@@ -64,6 +71,7 @@ class App extends d.Component {
     },
 
     {
+      _id: 'fake-id-4',
       type: 'file',
       uuid: '1fb01c1f-814b-45e7-b54a-f8c4a8c8e36f',
       name: 'hentai_3am.jpg',
@@ -89,6 +97,7 @@ class App extends d.Component {
 
         <DirListView
           entries={() => this.dirEntries}
+          onCheckboxToggle={(_id, checked) => console.log(_id, 'checked:', checked)}
           onEntryClick={(x) => console.log(x)}
         />
       </div>
