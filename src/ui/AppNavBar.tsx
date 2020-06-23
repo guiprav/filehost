@@ -1,9 +1,6 @@
 import d from 'dominant';
 
-document.head.append(
-  d.el(
-    'style',
-    `
+document.head.append(d.el('style', `
   .AppNavBar {
     display: flex;
     padding: var(--sp-5) var(--sp-6);
@@ -15,17 +12,17 @@ document.head.append(
     opacity: 0.7;
   }
 
-  .AppNavBar-forwardLink {
+  .AppNavBar-forwardBtn {
     margin-left: var(--sp-5);
   }
 
-  .AppNavBar-backLink,
-  .AppNavBar-forwardLink {
+  .AppNavBar-backBtn,
+  .AppNavBar-forwardBtn {
     cursor: pointer;
   }
 
-  .AppNavBar-backLink:disabled,
-  .AppNavBar-forwardLink:disabled {
+  .AppNavBar-backBtn:disabled,
+  .AppNavBar-forwardBtn:disabled {
     opacity: 0.3;
   }
 
@@ -54,9 +51,7 @@ document.head.append(
     font-size: var(--text-xs);
     opacity: 0.4;
   }
-`,
-  ),
-);
+`));
 
 class AppNavBar extends d.Component {
   props = null;
@@ -78,14 +73,14 @@ class AppNavBar extends d.Component {
     <div class="AppNavBar">
       <div class="AppNavBar-historyActions">
         <button
-          class="AppNavBar-backLink seamlessBtn"
+          class="AppNavBar-backBtn seamlessBtn"
           onClick={() => this.onHistoryClick('back')}
         >
           <i class="fa fa-arrow-left" />
         </button>
 
         <button
-          class="AppNavBar-forwardLink seamlessBtn"
+          class="AppNavBar-forwardBtn seamlessBtn"
           onClick={() => this.onHistoryClick('forward')}
           disabled
         >

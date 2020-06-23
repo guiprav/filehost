@@ -156,7 +156,12 @@ class App extends d.Component {
             <DirListView
               entries={() => this.dirEntries}
               onCheckboxToggle={(_id, checked) => console.log(_id, 'checked:', checked)}
-              onEntryClick={(x) => console.log(x)}
+              onEntryClick={(x) => console.log('entry:', x)}
+              onCopyLinkBtnClick={(x) => console.log('copy link:', x)}
+              onShareBtnClick={(x) => console.log('share:', x)}
+              onCutBtnClick={(x) => console.log('cut:', x)}
+              onCopyBtnClick={(x) => console.log('copy:', x)}
+              onDeleteBtnClick={(x) => console.log('delete:', x)}
             />
           </div>
         </div>

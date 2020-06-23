@@ -41,6 +41,21 @@ document.head.append(d.el('style', `
     margin-left: var(--sp-4);
     font-size: var(--text-xs);
   }
+
+  .DirListView-actionBtn {
+    padding: var(--sp-1);
+    font-size: var(--text-lg);
+    color: #252525;
+    opacity: 0.1;
+  }
+
+  .DirListView-actionBtn:hover {
+    opacity: 0.6;
+  }
+
+  .DirListView-actionBtn + .DirListView-actionBtn {
+    margin-left: var(--sp-1);
+  }
 `));
 
 type Prop<T> = T | (() => T);
@@ -59,6 +74,11 @@ interface DirListViewProps {
   selected?: Prop<Set<string>>;
   onCheckboxToggle?: (_id: string, checked: boolean) => void;
   onEntryClick?: (_id: string) => void;
+  onCopyLinkBtnClick?: (_id: string) => void;
+  onShareBtnClick?: (_id: string) => void;
+  onCutBtnClick?: (_id: string) => void;
+  onCopyBtnClick?: (_id: string) => void;
+  onDeleteBtnClick?: (_id: string) => void;
 }
 
 class DirListView extends d.Component {
@@ -109,6 +129,21 @@ class DirListView extends d.Component {
   onEntryClick = (_id: string) =>
     this.props.onEntryClick && this.props.onEntryClick(_id);
 
+  onCopyLinkBtnClick = (_id: string) =>
+    this.props.onCopyLinkBtnClick && this.props.onCopyLinkBtnClick(_id);
+
+  onShareBtnClick = (_id: string) =>
+    this.props.onShareBtnClick && this.props.onShareBtnClick(_id);
+
+  onCutBtnClick = (_id: string) =>
+    this.props.onCutBtnClick && this.props.onCutBtnClick(_id);
+
+  onCopyBtnClick = (_id: string) =>
+    this.props.onCopyBtnClick && this.props.onCopyBtnClick(_id);
+
+  onDeleteBtnClick = (_id: string) =>
+    this.props.onDeleteBtnClick && this.props.onDeleteBtnClick(_id);
+
   render = () => (
     <div class="DirListView">
       {d.if(() => this.entries().length, (
@@ -154,7 +189,42 @@ class DirListView extends d.Component {
 
               <td class="DirListView-sizeCell">{d.text(() => x.size)}</td>
 
-              <td></td>
+              <td class="DirListView-actionsCell">
+                <button
+                  class="DirListView-actionBtn seamlessBtn"
+                  onClick={() => this.onCopyLinkBtnClick(x._id)}
+                >
+                  <i class="fa fa-link" />
+                </button>
+
+                <button
+                  class="DirListView-actionBtn seamlessBtn"
+                  onClick={() => this.onShareBtnClick(x._id)}
+                >
+                  <i class="fa fa-share-alt" />
+                </button>
+
+                <button
+                  class="DirListView-actionBtn seamlessBtn"
+                  onClick={() => this.onCutBtnClick(x._id)}
+                >
+                  <i class="fa fa-cut" />
+                </button>
+
+                <button
+                  class="DirListView-actionBtn seamlessBtn"
+                  onClick={() => this.onCopyBtnClick(x._id)}
+                >
+                  <i class="fa fa-copy" />
+                </button>
+
+                <button
+                  class="DirListView-actionBtn seamlessBtn"
+                  onClick={() => this.onDeleteBtnClick(x._id)}
+                >
+                  <i class="fa fa-trash-o" />
+                </button>
+              </td>
             </tr>
           ))}
         </table>
