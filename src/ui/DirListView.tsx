@@ -36,6 +36,11 @@ document.head.append(d.el('style', `
     color: var(--gray-900);
     text-decoration: none;
   }
+
+  .DirListView-uploadStats {
+    margin-left: var(--sp-4);
+    font-size: var(--text-xs);
+  }
 `));
 
 type Prop<T> = T | (() => T);
@@ -137,6 +142,10 @@ class DirListView extends d.Component {
                 >
                   {d.text(() => x.name)}
                 </a>
+
+                <span class="DirListView-uploadStats">
+                  50% @ 0 KiB/s
+                </span>
               </td>
 
               <td class="DirListView-modifiedAtCell">
