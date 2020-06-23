@@ -10,8 +10,11 @@
     "test": "echo \"This template does not include a test runner by default.\" && exit 1"
   },
   "dependencies": {
+    "@types/netlify-identity-widget": "^1.4.1",
     "dominant": "github:guiprav/dominant",
-    "lodash": "^4.17.15"
+    "lodash": "^4.17.15",
+    "navigo": "^7.1.2",
+    "netlify-identity-widget": "^1.6.0"
   },
   "devDependencies": {
     "snowpack": "^2.5.0",

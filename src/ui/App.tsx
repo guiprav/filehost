@@ -2,16 +2,15 @@ import AppNavBar from './AppNavBar';
 import AppSidebar from './AppSidebar';
 import DirHeader from './DirHeader';
 import DirListView from './DirListView';
+import Navigo from 'navigo';
 import d from 'dominant';
+import netlifyIdentity, { User } from 'netlify-identity-widget';
 
-document.head.append(
-  d.el(
-    'style',
-    `
-  .App {
+document.head.append(d.el('style', `
+  .App-browsePage {
+    display: flex;
     width: 100vw;
     height: 100vh;
-    display: flex;
   }
   
   .App-sidebar {
@@ -24,15 +23,72 @@ document.head.append(
     flex-grow: 1;
     flex-direction: column;
   }
-`,
-  ),
-);
+`));
 
 class App extends d.Component {
+  auth = netlifyIdentity;
+  router = new Navigo();
+
+  user: User;
+
   constructor() {
     super();
+
     (window as any).app = this;
+
+    this.initRouter();
+    this.initAuth();
   }
+
+  initRouter() {
+    this.router.hooks({ after: () => d.update() });
+
+    this.router.on('/login', () => {
+      if (this.user) {
+        this.router.navigate('/browse');
+        return;
+      }
+
+      this.auth.open('signup');
+    });
+
+    this.router.on('/browse', () => {
+      if (!this.user) {
+        this.router.navigate('/login');
+        return;
+      }
+    });
+  }
+
+  initAuth() {
+    this.auth.on('error', err => console.error(err));
+
+    this.auth.on('init', user => {
+      if (!user) {
+        this.router.navigate('/login');
+        return;
+      }
+
+      this.user = user;
+      this.router.navigate('/browse');
+    });
+
+    this.auth.on('login', user => {
+      this.user = user;
+      this.router.navigate('/browse');
+    });
+
+    this.auth.on('logout', () => {
+      this.user = null;
+      this.router.navigate('/login');
+    });
+
+    this.auth.init();
+  }
+
+  onLogoutClick = async () => {
+    await this.auth.logout();
+  };
 
   breadcrumbs = [
     { key: 'myFiles', icon: 'fa fa-folder-o', label: 'My Files' },
@@ -82,25 +138,29 @@ class App extends d.Component {
 
   render = () => (
     <div class="App">
-      <div class="App-sidebar">
-        <AppSidebar />
-      </div>
+      {d.if(() => this.user, (
+        <div class="App-browsePage">
+          <div class="App-sidebar">
+            <AppSidebar onLogoutClick={this.onLogoutClick} />
+          </div>
 
-      <div class="App-contentsPanel">
-        <AppNavBar
-          breadcrumbs={() => this.breadcrumbs}
-          onHistoryClick={(x) => console.log(x)}
-          onBreadcrumbClick={(x) => console.log(x)}
-        />
+          <div class="App-contentsPanel">
+            <AppNavBar
+              breadcrumbs={() => this.breadcrumbs}
+              onHistoryClick={(x) => console.log(x)}
+              onBreadcrumbClick={(x) => console.log(x)}
+            />
 
-        <DirHeader heading={() => this.lastBreadcrumb.label} />
+            <DirHeader heading={() => this.lastBreadcrumb.label} />
 
-        <DirListView
-          entries={() => this.dirEntries}
-          onCheckboxToggle={(_id, checked) => console.log(_id, 'checked:', checked)}
-          onEntryClick={(x) => console.log(x)}
-        />
-      </div>
+            <DirListView
+              entries={() => this.dirEntries}
+              onCheckboxToggle={(_id, checked) => console.log(_id, 'checked:', checked)}
+              onEntryClick={(x) => console.log(x)}
+            />
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
