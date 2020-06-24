@@ -42,11 +42,19 @@ document.head.append(d.el('style', `
     font-size: var(--text-xs);
   }
 
+  .DirListView-actionsCell {
+    opacity: 0.5;
+  }
+
+  .DirListView-entryRow:hover .DirListView-actionsCell {
+    opacity: 1;
+  }
+
   .DirListView-actionBtn {
     padding: var(--sp-1);
     font-size: var(--text-lg);
     color: #252525;
-    opacity: 0.1;
+    opacity: 0.2;
   }
 
   .DirListView-actionBtn:hover {
@@ -95,18 +103,6 @@ class DirListView extends d.Component {
     return d.resolve(this.props.selected) || new Set();
   }
 
-  onCheckboxClick = (ev: Event, _id: string) => {
-    let { target } = ev;
-
-    if (!(target instanceof HTMLInputElement)) {
-      return;
-    }
-
-    if (this.props.onCheckboxToggle) {
-      this.props.onCheckboxToggle(_id, target.checked);
-    }
-  };
-
   iconClassesFor = ({ type, name }: DirListViewEntry): string => {
     if (type === 'dir') {
       return 'fa fa-folder-o';
@@ -124,7 +120,15 @@ class DirListView extends d.Component {
   };
 
   entryHrefFor = ({ type, uuid, name }: DirListViewEntry) =>
-    type === 'file' ? `https://filet.n2.gs/filehost/${uuid}/${name}` : '#';
+    type === 'file' ? `https://filet.guiprav.cc/filehost/${uuid}/${name}` : '#';
+
+  onCheckboxClick = (ev: MouseEvent, _id: string) => {
+    let target = ev.target as HTMLInputElement;
+
+    if (this.props.onCheckboxToggle) {
+      this.props.onCheckboxToggle(_id, target.checked);
+    }
+  };
 
   onEntryClick = (_id: string) =>
     this.props.onEntryClick && this.props.onEntryClick(_id);
