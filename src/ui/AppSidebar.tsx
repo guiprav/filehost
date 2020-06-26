@@ -1,22 +1,5 @@
+import './AppSidebar.css';
 import d from 'dominant';
-
-document.head.append(
-  d.el(
-    'style',
-    `
-  .AppSidebar {
-    min-width: 200px;
-    padding: var(--sp-5);
-    background-color: #F2F4F5;
-  }
-  
-  .AppSidebar-appName {
-    font-size: var(--text-xl);
-    font-weight: 100;
-  }
-`,
-  ),
-);
 
 interface AppSidebarProps {
   onLogoutClick: (ev: MouseEvent) => void;

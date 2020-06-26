@@ -1,21 +1,6 @@
+import './IconCheckbox.css';
 import d from 'dominant';
 import omit from 'lodash/omit';
-
-document.head.append(d.el('style', `
-  .IconCheckbox {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    width: 1rem;
-    height: 1rem;
-  }
-
-  .IconCheckbox-input,
-  .IconCheckbox-input:checked ~ .IconCheckbox-uncheckedIcon,
-  .IconCheckbox-input:not(:checked) ~ .IconCheckbox-checkedIcon {
-    display: none;
-  }
-`));
 
 type Prop<T> = T | (() => T);
 

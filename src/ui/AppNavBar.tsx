@@ -1,57 +1,5 @@
+import './AppNavBar.css';
 import d from 'dominant';
-
-document.head.append(d.el('style', `
-  .AppNavBar {
-    display: flex;
-    padding: var(--sp-5) var(--sp-6);
-  }
-
-  .AppNavBar-historyActions {
-    margin-right: var(--sp-8);
-    font-size: var(--text-lg);
-    opacity: 0.7;
-  }
-
-  .AppNavBar-forwardBtn {
-    margin-left: var(--sp-5);
-  }
-
-  .AppNavBar-backBtn,
-  .AppNavBar-forwardBtn {
-    cursor: pointer;
-  }
-
-  .AppNavBar-backBtn:disabled,
-  .AppNavBar-forwardBtn:disabled {
-    opacity: 0.3;
-  }
-
-  .AppNavBar-breadcrumbs {
-    display: flex;
-    align-items: center;
-    font-size: var(--text-sm);
-    font-weight: 300;
-  }
-
-  .AppNavBar-breadcrumbIcon {
-    margin-right: var(--sp-4);
-    font-size: var(--text-sm);
-  }
-
-  .AppNavBar-breadcrumbSeparator {
-    margin: 0 var(--sp-2);
-    font-size: var(--text-xs);
-    opacity: 0.4;
-  }
-
-  .AppNavBar-breadcrumb:nth-child(n+2)::before {
-    margin: 0 var(--sp-3);
-    content: '\\f054';
-    font: normal normal normal 14px/1 ForkAwesome;
-    font-size: var(--text-xs);
-    opacity: 0.4;
-  }
-`));
 
 class AppNavBar extends d.Component {
   props = null;

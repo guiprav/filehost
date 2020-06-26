@@ -1,0 +1,16 @@
+.App-browsePage {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+}
+
+.App-sidebar {
+  display: flex;
+  box-shadow: 10px 0px 50px var(--gray-200);
+}
+
+.App-contentsPanel {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+}

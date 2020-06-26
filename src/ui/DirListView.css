@@ -1,0 +1,62 @@
+.DirListView {
+  padding: var(--sp-3) var(--sp-6);
+}
+
+.DirListView-table {
+  width: 100%;
+}
+
+.DirListView-headerRow th {
+  padding-bottom: var(--sp-4);
+  text-align: left;
+  color: #A5AEC0;
+}
+
+.DirListView-entryRow {
+  font-size: var(--text-sm);
+}
+
+.DirListView-entryRow td {
+  padding: var(--sp-2) 0;
+}
+
+.DirListView-nameCheckbox {
+  margin-right: var(--sp-4);
+}
+
+.DirListView-entryIcon {
+  margin-right: var(--sp-2);
+}
+
+.DirListView-nameLink {
+  color: var(--gray-900);
+  text-decoration: none;
+}
+
+.DirListView-uploadStats {
+  margin-left: var(--sp-4);
+  font-size: var(--text-xs);
+}
+
+.DirListView-actionsCell {
+  opacity: 0.5;
+}
+
+.DirListView-entryRow:hover .DirListView-actionsCell {
+  opacity: 1;
+}
+
+.DirListView-actionBtn {
+  padding: var(--sp-1);
+  font-size: var(--text-lg);
+  color: #252525;
+  opacity: 0.2;
+}
+
+.DirListView-actionBtn:hover {
+  opacity: 0.6;
+}
+
+.DirListView-actionBtn + .DirListView-actionBtn {
+  margin-left: var(--sp-1);
+}

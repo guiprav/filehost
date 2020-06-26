@@ -14,7 +14,8 @@
     "dominant": "github:guiprav/dominant",
     "lodash": "^4.17.15",
     "navigo": "^7.1.2",
-    "netlify-identity-widget": "^1.6.0"
+    "netlify-identity-widget": "^1.6.0",
+    "sweetalert2": "^9.15.2"
   },
   "devDependencies": {
     "snowpack": "^2.5.0",

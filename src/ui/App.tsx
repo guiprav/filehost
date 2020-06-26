@@ -1,3 +1,5 @@
+import './App.css';
+import 'sweetalert2/dist/sweetalert2.css';
 import AppNavBar from './AppNavBar';
 import AppSidebar from './AppSidebar';
 import DirHeader from './DirHeader';
@@ -5,25 +7,6 @@ import DirListView from './DirListView';
 import Navigo from 'navigo';
 import d from 'dominant';
 import netlifyIdentity, { User } from 'netlify-identity-widget';
-
-document.head.append(d.el('style', `
-  .App-browsePage {
-    display: flex;
-    width: 100vw;
-    height: 100vh;
-  }
-  
-  .App-sidebar {
-    display: flex;
-    box-shadow: 10px 0px 50px var(--gray-200);
-  }
-  
-  .App-contentsPanel {
-    display: flex;
-    flex-grow: 1;
-    flex-direction: column;
-  }
-`));
 
 class App extends d.Component {
   auth = netlifyIdentity;
@@ -147,21 +130,24 @@ class App extends d.Component {
           <div class="App-contentsPanel">
             <AppNavBar
               breadcrumbs={() => this.breadcrumbs}
-              onHistoryClick={(x) => console.log(x)}
-              onBreadcrumbClick={(x) => console.log(x)}
+              onHistoryClick={x => console.log(x)}
+              onBreadcrumbClick={x => console.log(x)}
             />
 
-            <DirHeader heading={() => this.lastBreadcrumb.label} />
+            <DirHeader
+              heading={() => this.lastBreadcrumb.label}
+              onCreateFolder={x => console.log('create folder:', x)}
+            />
 
             <DirListView
               entries={() => this.dirEntries}
-              onEntryClick={(x) => console.log('open:', x)}
+              onEntryClick={x => console.log('open:', x)}
               onCheckboxToggle={(_id, checked) => console.log(_id, 'checked:', checked)}
-              onCopyLinkBtnClick={(x) => console.log('copy link:', x)}
-              onShareBtnClick={(x) => console.log('share:', x)}
-              onCutBtnClick={(x) => console.log('cut:', x)}
-              onCopyBtnClick={(x) => console.log('copy:', x)}
-              onDeleteBtnClick={(x) => console.log('delete:', x)}
+              onCopyLinkBtnClick={x => console.log('copy link:', x)}
+              onShareBtnClick={x => console.log('share:', x)}
+              onCutBtnClick={x => console.log('cut:', x)}
+              onCopyBtnClick={x => console.log('copy:', x)}
+              onDeleteBtnClick={x => console.log('delete:', x)}
             />
           </div>
         </div>
