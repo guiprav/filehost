@@ -5,6 +5,8 @@ import AppSidebar from './AppSidebar';
 import DirHeader from './DirHeader';
 import DirListView from './DirListView';
 import Navigo from 'navigo';
+import StorageModel from '../StorageModel';
+import axios from 'axios';
 import d from 'dominant';
 import netlifyIdentity, { User } from 'netlify-identity-widget';
 
@@ -13,6 +15,12 @@ class App extends d.Component {
   router = new Navigo();
 
   user: User;
+  storage: StorageModel;
+
+  data: any;
+
+  dirId: string;
+  dir = () => this.data && this.data[this.dirId];
 
   constructor() {
     super();
@@ -46,13 +54,22 @@ class App extends d.Component {
   initAuth() {
     this.auth.on('error', err => console.error(err));
 
-    this.auth.on('init', user => {
+    this.auth.on('init', async user => {
       if (!user) {
         this.router.navigate('/login');
         return;
       }
 
+      // No idea why, but init is being fired twice.
+      if (this.user) {
+        return;
+      }
+
       this.user = user;
+      this.storage = new StorageModel(user.id);
+
+      await this.storage.initUser({ handle: user.email });
+
       this.router.navigate('/browse');
     });
 
