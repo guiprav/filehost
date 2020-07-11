@@ -7,6 +7,7 @@ type Prop<T> = T | (() => T);
 interface DirHeaderProps {
   heading: Prop<string>;
   onCreateFolder?: (name: string) => void;
+  onUploadFiles?: (files: File[]) => void;
 }
 
 class DirHeader extends d.Component {
@@ -33,6 +34,16 @@ class DirHeader extends d.Component {
     }
   };
 
+  onUploadInputChange = ev => {
+    let files = [...ev.target.files];
+
+    ev.target.value = null;
+
+    if (files.length && this.props.onUploadFiles) {
+      this.props.onUploadFiles(files);
+    }
+  };
+
   render = () => (
     <div class="DirHeader">
       <div class="DirHeader-heading">
@@ -47,9 +58,21 @@ class DirHeader extends d.Component {
           <i class="fa fa-plus-circle" />
         </button>
 
-        <button class="DirHeader-actionBtn seamlessBtn">
+        <button
+          class="DirHeader-actionBtn seamlessBtn"
+          onClick={() => this.uploadInput.click()}
+        >
           <i class="fa fa-cloud-upload" />
         </button>
+
+        {this.uploadInput = (
+          <input
+            type="file"
+            style="display: none"
+            onChange={this.onUploadInputChange}
+            multiple
+          />
+        )}
       </div>
     </div>
   );

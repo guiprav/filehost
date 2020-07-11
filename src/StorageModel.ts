@@ -7,6 +7,9 @@ class StorageModel {
   data = {};
   uploading = new Set();
 
+  userId = null;
+  dirId = null;
+
   constructor(userId) {
     this.userId = userId;
   }
@@ -41,49 +44,37 @@ class StorageModel {
   }
 
   dirEntries = () => Object.values(this.data)
-    .filter(x => x.parentId === this.dirId);
+    .concat(...this.uploading)
+    .filter((x: any) => x.parentId === this.dirId);
 
-  browse(dirId) {
-    this.data = {
-      'dirEntry:1': {
-        _id: 'dirEntry:1',
-        parentId: 'user:1',
-        type: 'dir',
-        name: 'Pictures',
-      },
+  async browse(dirId) {
+    let res = await this.hub.get('main');
+    let data = {};
 
-      'dirEntry:2': {
-        _id: 'dirEntry:2',
-        parentId: 'dirEntry:1',
-        type: 'dir',
-        name: 'Memes',
-      },
-
-      'dirEntry:3': {
-        _id: 'dirEntry:3',
-        parentId: 'dirEntry:2',
-        type: 'file',
-        name: 'shoo_sadness.jpg',
-        uuid: '1234',
-      },
-    };
-
-    if (!this.data[dirId]) {
-      throw new Error();
+    for (let x of res.data) {
+      data[x._id] = x;
     }
 
+    if (!data[dirId]) {
+      throw new Error(`${dirId} not found`);
+    }
+
+    this.data = data;
     this.dirId = dirId;
   }
 
-  async upload(file) {
-    try {
-      let st = {
-        parentId: this.dirId,
-        file,
-        name: file.name,
-        progress: 0,
-      };
+  async upload(file, { onProgress } = {}) {
+    let st = {
+      parentId: this.dirId,
+      file,
+      name: file.name,
+      progress: 0,
+      filetRes: null,
+      hubRes: null,
+      error: null,
+    };
 
+    try {
       this.uploading.add(st);
 
       let uploadData = new FormData();
@@ -94,8 +85,11 @@ class StorageModel {
         onUploadProgress: ev => {
           st.progress = ev.loaded / ev.total;
           console.log({ ...st });
+          onProgress && onProgress(ev);
         },
       });
+
+      st.progress = null;
 
       st.hubRes = await this.hub.post('main', {
         parentId: this.dirId,

@@ -99,47 +99,15 @@ class App extends d.Component {
     return this.breadcrumbs[this.breadcrumbs.length - 1];
   }
 
-  dirEntries = [
-    {
-      _id: 'fake-id-1',
-      type: 'dir',
-      name: 'Memes',
-      modifiedAt: 'Today',
-      size: '-',
-    },
-
-    {
-      _id: 'fake-id-2',
-      type: 'file',
-      uuid: '1a26940b-919d-4029-b462-dd2651a7463b',
-      name: 'sadboy_and_egirl.jpg',
-      modifiedAt: 'Today',
-      size: '22 KiB',
-    },
-
-    {
-      _id: 'fake-id-3',
-      type: 'file',
-      uuid: 'ed48e726-1ecc-411d-a5b0-89d43f965e75',
-      name: 'js_is_shit.jpg',
-      modifiedAt: 'Today',
-      size: '22 KiB',
-    },
-
-    {
-      _id: 'fake-id-4',
-      type: 'file',
-      uuid: '1fb01c1f-814b-45e7-b54a-f8c4a8c8e36f',
-      name: 'hentai_3am.jpg',
-      modifiedAt: 'Today',
-      size: '22 KiB',
-    },
-  ];
+  onBrowsePageAttach = async () => {
+    await this.storage.browse(this.user.id);
+    d.update();
+  };
 
   render = () => (
     <div class="App">
       {d.if(() => this.user, (
-        <div class="App-browsePage">
+        <div class="App-browsePage" onAttach={this.onBrowsePageAttach}>
           <div class="App-sidebar">
             <AppSidebar onLogoutClick={this.onLogoutClick} />
           </div>
@@ -154,10 +122,19 @@ class App extends d.Component {
             <DirHeader
               heading={() => this.lastBreadcrumb.label}
               onCreateFolder={x => console.log('create folder:', x)}
+              onUploadFiles={async xs => {
+                for (let x of xs) {
+                  await this.storage.upload(x, {
+                    onProgress: () => d.update(),
+                  });
+
+                  d.update();
+                }
+              }}
             />
 
             <DirListView
-              entries={() => this.dirEntries}
+              entries={() => this.storage.dirEntries()}
               onEntryClick={x => console.log('open:', x)}
               onCheckboxToggle={(_id, checked) => console.log(_id, 'checked:', checked)}
               onCopyLinkBtnClick={x => console.log('copy link:', x)}

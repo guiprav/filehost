@@ -89,10 +89,10 @@ class DirListView extends d.Component {
       {d.if(() => this.entries().length, (
         <table class="DirListView-table">
           <tr class="DirListView-headerRow">
-            <th>Name</th>
-            <th>Modified</th>
-            <th>Size</th>
-            <th>Actions</th>
+            <th class="DirListView-nameHeaderCell">Name</th>
+            <th class="DirListView-modifiedAtHeaderCell">Modified</th>
+            <th class="DirListView-sizeHeaderCell">Size</th>
+            <th class="DirListView-actionsHeaderCell">Actions</th>
           </tr>
 
           {d.map(this.entries, (x: DirListViewEntry) => (
@@ -118,9 +118,11 @@ class DirListView extends d.Component {
                   {d.text(() => x.name)}
                 </a>
 
-                <span class="DirListView-uploadStats">
-                  50% @ 0 KiB/s
-                </span>
+                {d.if(() => typeof x.progress === 'number', (
+                  <span class="DirListView-uploadStats">
+                    {d.text(() => Math.round(x.progress * 100))}% @ 0 KiB/s
+                  </span>
+                ))}
               </td>
 
               <td class="DirListView-modifiedAtCell">
