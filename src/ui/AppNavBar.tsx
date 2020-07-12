@@ -36,19 +36,16 @@ class AppNavBar extends d.Component {
         </button>
       </div>
 
+      <i class="AppNavBar-breadcrumbIcon fa fa-folder-o" />
+
       <div class="AppNavBar-breadcrumbs">
         {d.map(this.breadcrumbs, (x) => (
           <span class="AppNavBar-breadcrumb">
             <a
               href="#"
               class="AppNavBar-breadcrumbLink seamlessLink"
-              onClick={() => this.onBreadcrumbClick(x.key)}
+              onClick={() => this.onBreadcrumbClick(x._id)}
             >
-              {d.if(
-                () => x.icon,
-                <i class={() => ['AppNavBar-breadcrumbIcon', x.icon]} />,
-              )}
-
               {d.text(() => x.label)}
             </a>
           </span>

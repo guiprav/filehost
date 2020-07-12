@@ -114,17 +114,25 @@ class App extends d.Component {
 
           <div class="App-contentsPanel">
             <AppNavBar
-              breadcrumbs={() => this.breadcrumbs}
+              breadcrumbs={() => this.storage.curPath()}
               onHistoryClick={x => console.log(x)}
-              onBreadcrumbClick={x => console.log(x)}
+              onBreadcrumbClick={async x => {
+                await this.storage.browse(x);
+                d.update();
+              }}
             />
 
             <DirHeader
               heading={() => this.lastBreadcrumb.label}
-              onCreateFolder={x => console.log('create folder:', x)}
+              onCreateFolder={async x => {
+                await this.storage.createDir(x);
+                d.update();
+              }}
               onUploadFiles={async xs => {
+                let { dirId } = this.storage;
+
                 for (let x of xs) {
-                  await this.storage.upload(x, {
+                  await this.storage.upload(dirId, x, {
                     onProgress: () => d.update(),
                   });
 
@@ -135,7 +143,14 @@ class App extends d.Component {
 
             <DirListView
               entries={() => this.storage.dirEntries()}
-              onEntryClick={x => console.log('open:', x)}
+              onEntryClick={async x => {
+                let entry = this.storage.data[x];
+
+                if (entry.type === 'dir') {
+                  await this.storage.browse(x);
+                  d.update();
+                }
+              }}
               onCheckboxToggle={(_id, checked) => console.log(_id, 'checked:', checked)}
               onCopyLinkBtnClick={x => console.log('copy link:', x)}
               onShareBtnClick={x => console.log('share:', x)}

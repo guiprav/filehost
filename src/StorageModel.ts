@@ -45,7 +45,22 @@ class StorageModel {
 
   dirEntries = () => Object.values(this.data)
     .concat(...this.uploading)
-    .filter((x: any) => x.parentId === this.dirId);
+    .filter((x: any) => x.parentId === this.dirId)
+    .sort((a, b) => {
+      if (a.type === 'dir' && b.type !== 'dir') {
+        return -1;
+      }
+
+      if (a.name < b.name) {
+        return -1;
+      }
+
+      if (a.name > b.name) {
+        return 1;
+      }
+
+      return 0;
+    });
 
   async browse(dirId) {
     let res = await this.hub.get('main');
@@ -63,9 +78,19 @@ class StorageModel {
     this.dirId = dirId;
   }
 
-  async upload(file, { onProgress } = {}) {
-    let st = {
+  async createDir(name) {
+    let res = await this.hub.post('main', {
       parentId: this.dirId,
+      type: 'dir',
+      name,
+    });
+
+    this.data[res.data._id] = res.data;
+  }
+
+  async upload(parentId, file, { onProgress } = {}) {
+    let st = {
+      parentId,
       file,
       name: file.name,
       progress: 0,
@@ -92,7 +117,7 @@ class StorageModel {
       st.progress = null;
 
       st.hubRes = await this.hub.post('main', {
-        parentId: this.dirId,
+        parentId,
         type: 'file',
         name: file.name,
         uuid: st.filetRes.data.uuid,
