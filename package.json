@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@types/netlify-identity-widget": "^1.4.1",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "dominant": "github:guiprav/dominant",
     "lodash": "^4.17.15",
     "navigo": "^7.1.2",
