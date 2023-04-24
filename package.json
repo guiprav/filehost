@@ -19,7 +19,7 @@
     "sweetalert2": "^9.15.2"
   },
   "devDependencies": {
-    "snowpack": "^2.5.0",
+    "snowpack": "^3.7.1",
     "typescript": "^3.9.5"
   }
 }
